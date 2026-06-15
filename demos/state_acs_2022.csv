@@ -1,0 +1,51 @@
+"","NAME","region","median_income","pct_college"
+"1","Alabama","South",59609,27.2083872924761
+"2","Alaska","West",86370,30.7482850386214
+"3","Arizona","West",72581,31.7988734892013
+"4","Arkansas","South",56335,24.7055511561648
+"5","California","West",91905,35.8644015590385
+"6","Colorado","West",87598,43.7307043356868
+"7","Connecticut","Northeast",90213,41.3848833103908
+"8","Delaware","South",79325,34.4616513698591
+"9","Florida","South",67917,32.3332186766661
+"10","Georgia","South",71355,33.6336752055564
+"11","Hawaii","West",94814,34.7161791988296
+"12","Idaho","West",70214,30.2090413562364
+"13","Illinois","Midwest",78433,36.6715921127008
+"14","Indiana","Midwest",67173,28.2352671206293
+"15","Iowa","Midwest",70571,30.2800485359905
+"16","Kansas","Midwest",69747,34.6876751863464
+"17","Kentucky","South",60183,26.4724533754751
+"18","Louisiana","South",57852,26.1304341418184
+"19","Maine","Northeast",68251,34.1227940248181
+"20","Maryland","South",98461,42.2231429111323
+"21","Massachusetts","Northeast",96505,45.9098502246194
+"22","Michigan","Midwest",68505,31.1359802975857
+"23","Minnesota","Midwest",84313,38.1954123382456
+"24","Mississippi","South",52985,23.881814052782
+"25","Missouri","Midwest",65920,31.1932364699273
+"26","Montana","West",66341,33.9787654972303
+"27","Nebraska","Midwest",71722,33.4633382296216
+"28","Nevada","West",71646,26.5493827532958
+"29","New Hampshire","Northeast",90845,39.0481604807927
+"30","New Jersey","Northeast",97126,42.2524775544682
+"31","New Mexico","West",58722,29.0746686677248
+"32","New York","Northeast",81386,38.7925365972776
+"33","North Carolina","South",66186,33.8657566976087
+"34","North Dakota","Midwest",73959,31.4256028570526
+"35","Ohio","Midwest",66990,30.3706458028103
+"36","Oklahoma","South",61364,27.2668071835271
+"37","Oregon","West",76632,35.4826587745107
+"38","Pennsylvania","Northeast",73170,33.7564634326835
+"39","Rhode Island","Northeast",81370,36.2804103287505
+"40","South Carolina","South",63623,30.6409131063588
+"41","South Dakota","Midwest",69457,30.3675632908706
+"42","Tennessee","South",64035,29.7069879412749
+"43","Texas","South",73035,32.2658969820022
+"44","Utah","West",86833,36.1309319415751
+"45","Vermont","Northeast",74014,41.7246690325096
+"46","Virginia","South",87249,40.9657683495344
+"47","Washington","West",90325,37.9525683361777
+"48","West Virginia","South",55217,22.7111611296321
+"49","Wisconsin","Midwest",72458,32.0238913136443
+"50","Wyoming","West",72495,28.9893874967458
