@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="dataviz-01-ggplot2-advanced_files/libs/clipboard/clipboard.min.js"></script>
+<script src="dataviz-01-ggplot2-advanced_files/libs/quarto-html/tabby.min.js"></script>
+<script src="dataviz-01-ggplot2-advanced_files/libs/quarto-html/popper.min.js"></script>
+<script src="dataviz-01-ggplot2-advanced_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="dataviz-01-ggplot2-advanced_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="dataviz-01-ggplot2-advanced_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="dataviz-01-ggplot2-advanced_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <title>dataviz-01-ggplot2-advanced</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="dataviz-01-ggplot2-advanced_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="dataviz-01-ggplot2-advanced_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="dataviz-01-ggplot2-advanced_files/libs/revealjs/dist/theme/quarto-6a30c74e17e0e80b367e98c7d179ecc5.css">
+  <link href="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="section" class="slide level2 title-custom">
+<h2></h2>
+<div class="title-block">
+<div class="t-title">
+<p>Data Visualization with ggplot2: Skeleton to Publication-Ready</p>
+</div>
+<div class="t-rule">
+
+</div>
+<div class="t-authors">
+<p><strong>Instructor:</strong> Yuanyuan Wen · Virginia Tech</p>
+</div>
+<div class="t-program">
+<p>Data Science for the Public Good (DSPG) · June 16, 2026</p>
+</div>
+<div class="t-logos">
+<p><img data-src="../kohlCenter_logo.jpg" height="65"></p>
+</div>
+</div>
+</section>
+<section id="our-goals" class="slide level2">
+<h2>Our Goals</h2>
+<p>By the end of this session you will be able to:</p>
+<ul>
+<li><strong>Produce</strong> publication-ready static figures using ggplot2</li>
+<li><strong>Choose</strong> the right chart type for your data and the story you want to tell</li>
+<li><strong>Apply</strong> a refinement workflow: start from a skeleton and build to a polished figure step by step</li>
+</ul>
+<div class="vt-card">
+<p>You already know how to make plots that work. Today we focus on making them <strong>communicate</strong>.</p>
+</div>
+<aside class="notes">
+<p>Frame this session as a workflow upgrade. Students know ggplot basics. The goal is to make every decision intentional — title, color, scale, theme, annotation — and build the habit of going from “this works” to “this tells a clear story.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ggplot2-syntax-a-quick-review" class="slide level2 section-slide" data-background-color="#861F41">
+<h2>ggplot2 Syntax — A Quick Review</h2>
+</section>
+<section id="the-grammar-of-graphics" class="slide level2">
+<h2>The Grammar of Graphics</h2>
+<p>Every ggplot2 call follows the same skeleton:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATA<span class="sc">&gt;</span>) <span class="sc">+</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> <span class="sc">&lt;</span>VAR<span class="sc">&gt;</span>, <span class="at">y =</span> <span class="sc">&lt;</span>VAR<span class="sc">&gt;</span>, <span class="at">color =</span> <span class="sc">&lt;</span>VAR<span class="sc">&gt;</span>) <span class="sc">+</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>  geom_<span class="sc">&lt;</span>TYPE<span class="sc">&gt;</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ggplot(data)</code></td>
+<td>Which dataset</td>
+</tr>
+<tr class="even">
+<td><code>aes()</code></td>
+<td>Columns → x, y, color, size, shape</td>
+</tr>
+<tr class="odd">
+<td><code>geom_*()</code></td>
+<td>The visual mark — point, bar, line, histogram, …</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Refresher, not a new lesson. If anything here is unfamiliar, the pre-class materials cover it. Today we use all five layers together to build a real figure, one layer at a time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-minimal-ggplot2-plot" class="slide level2">
+<h2>A Minimal ggplot2 Plot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> flipper_length_mm, <span class="at">y =</span> body_mass_g)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/minimal-plot-1.png" alt="A minimal scatter plot of penguin flipper length vs body mass with no styling beyond ggplot2 defaults." width="672" class="r-stretch"><aside class="notes">
+<p>This is always the starting point: get the data visible before adding any polish. Notice: axis labels use column names with underscores, the gray background is the ggplot2 default, and there is no title. Every layer we add today addresses one of these issues.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-skeleton-to-publish-ready" class="slide level2 section-slide" data-background-color="#861F41">
+<h2>From Skeleton to Publish-Ready</h2>
+</section>
+<section id="describe-this-plot-in-one-sentence" class="slide level2">
+<h2>Describe This Plot in One Sentence</h2>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/one-sentence-plot-1.png" alt="Polished scatter plot of GDP per capita vs life expectancy for 2007, colored by continent, with labeled country outliers." width="864" class="r-stretch"><p>What is the one-sentence takeaway from this chart?</p>
+</section>
+<section id="the-answer" class="slide level2">
+<h2>The Answer</h2>
+<div class="vt-card">
+<p><strong>“Wealthier countries tend to live longer, but the relationship flattens at high income levels — and a few wealthy countries still have surprisingly short life expectancies.”</strong></p>
+</div>
+<p>A good figure has <strong>one clear sentence</strong>. If you cannot write it, the chart is not done yet.</p>
+<p>We will build a plot like this together — step by step — using ACS state-level data.</p>
+<aside class="notes">
+<p>Ask several students for their sentence before revealing this one. There is no single right answer, but a good sentence makes a specific, directional claim. “GDP and life expectancy are related” is too vague. The displayed sentence makes a specific claim about the shape of the relationship.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="our-dataset-acs-state-level-data" class="slide level2">
+<h2>Our Dataset: ACS State-Level Data</h2>
+<p><strong>Pull from API</strong> — run once before class, save locally:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>state_data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"state"</span>,</span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_income =</span> <span class="st">"B19013_001"</span>,   <span class="co"># median household income</span></span>
+<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop_25plus    =</span> <span class="st">"B15003_001"</span>,   <span class="co"># population 25 and over</span></span>
+<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">ba            =</span> <span class="st">"B15003_022"</span>,   <span class="co"># bachelor's degree</span></span>
+<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">ma            =</span> <span class="st">"B15003_023"</span>,   <span class="co"># master's degree</span></span>
+<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">prof          =</span> <span class="st">"B15003_024"</span>,   <span class="co"># professional degree</span></span>
+<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">phd           =</span> <span class="st">"B15003_025"</span>    <span class="co"># doctorate</span></span>
+<span id="cb3-12"><a href="" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">year   =</span> <span class="dv">2022</span>,</span>
+<span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="st">"wide"</span></span>
+<span id="cb3-15"><a href="" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb3-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct_college =</span> (baE <span class="sc">+</span> maE <span class="sc">+</span> profE <span class="sc">+</span> phdE) <span class="sc">/</span> pop_25plusE <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb3-18"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb3-19"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="at">NAME   =</span> state.name,</span>
+<span id="cb3-20"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="at">region =</span> <span class="fu">recode</span>(<span class="fu">as.character</span>(state.region), <span class="st">"North Central"</span> <span class="ot">=</span> <span class="st">"Midwest"</span>)</span>
+<span id="cb3-21"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-22"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"NAME"</span></span>
+<span id="cb3-23"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-24"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(region)) <span class="sc">|&gt;</span></span>
+<span id="cb3-25"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NAME, region, <span class="at">median_income =</span> median_incomeE, pct_college)</span>
+<span id="cb3-26"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(state_data, <span class="st">"data/state_acs_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Fallback</strong> — if the API is down:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>state_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/state_acs_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<aside class="notes">
+<p>state.name and state.region are built into R base — no extra package needed for the region lookup. The ACS pull takes about 30 seconds. Run it in advance and save the CSV to the data/ folder. Distribute the CSV to students so they can load it without the API.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="step-1-skeleton" class="slide level2">
+<h2>Step 1 — Skeleton</h2>
+<p>Wire up the data. Confirm the relationship is visible before adding anything else.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income, <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/step1-skeleton-1.png" alt="Bare skeleton scatter plot: education attainment on x, median income on y, colored by Census region. No labels, default styling." width="768" class="r-stretch"><aside class="notes">
+<p>Step 1 is diagnosis. Is the shape of the relationship what you expected? Are there obvious outliers? Any data problems? Only add more once you know the wiring is correct. The y-axis will show raw dollar values like 80000 — that is fine for now.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="step-2-labels" class="slide level2">
+<h2>Step 2 — Labels</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income, <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Education Attainment and Household Income by State, 2022"</span>,</span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">x       =</span> <span class="st">"Bachelor's Degree or Higher (%)"</span>,</span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">color   =</span> <span class="st">"Census Region"</span>,</span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span></span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/step2-labels-1.png" alt="Scatter plot with axis labels, title, and data source caption added." width="768" class="r-stretch"><aside class="notes">
+<p>Step 2 is about communication. Column names become human-readable axis labels. The title gives the reader orientation — what is this chart about? The caption always credits the data source, which matters for community partner reports and publications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="choosing-a-color-palette" class="slide level2">
+<h2>Choosing a Color Palette</h2>
+<p>Match your palette to your data type:</p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/palette-types-1.png" alt="Four plots: two qualitative palette examples (viridis_d and Okabe-Ito), one sequential (viridis_c with 3rd variable), one diverging (RdBu correlation heatmap)." width="1056" class="r-stretch"><aside class="notes">
+<p>viridis_d and Okabe-Ito are both colorblind-safe for qualitative data. viridis_d carries a slight implied order (light to dark), which can subtly suggest one category is “higher” than another. Okabe-Ito was designed specifically for color vision deficiency with no ordering implication — it is the safer default for truly unordered categories.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-not-ggplot2-default-colorblind-simulation" class="slide level2">
+<h2>Why Not ggplot2 Default? Colorblind Simulation</h2>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/colorblind-sim-1.png" alt="Six bar charts showing how ggplot2 default, viridis_d, and Okabe-Ito palettes appear under normal vision vs deuteranopia simulation." width="1056" class="r-stretch"><p>Default palette loses distinction under colorblindness. viridis and Okabe-Ito hold up.</p>
+</section>
+<section id="color-rules-for-categorical-palettes" class="slide level2">
+<h2>Color Rules for Categorical Palettes</h2>
+<ul>
+<li>Max <strong>5–6 colors</strong> — beyond that, readers cannot distinguish</li>
+<li>Prefer <strong>Okabe-Ito</strong> (no order implied) or <strong><code>viridis_d</code></strong> (slight order) — both colorblind-safe</li>
+<li>Avoid ggplot2 <strong>default</strong> and <strong>red/green</strong> combinations</li>
+<li>Test in <strong>grayscale</strong> — if it becomes unreadable, it won’t print well</li>
+</ul>
+<div class="vt-card">
+<p><strong>Categorical</strong> → <code>scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", ...))</code> (Okabe-Ito)</p>
+<p><strong>Sequential</strong> → <code>scale_color_viridis_c()</code></p>
+<p><strong>Diverging</strong> → <code>scale_color_distiller(palette = "RdBu")</code></p>
+</div>
+</section>
+<section id="step-3-color-palette" class="slide level2">
+<h2>Step 3 — Color Palette</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income, <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Education Attainment and Household Income by State, 2022"</span>,</span>
+<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">x       =</span> <span class="st">"Bachelor's Degree or Higher (%)"</span>,</span>
+<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">color   =</span> <span class="st">"Census Region"</span>,</span>
+<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span></span>
+<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/step4-color-1.png" alt="Scatter plot of education vs income colored by Census region with viridis palette and a single overall trend line." width="768" class="r-stretch"></section>
+<section id="step-4-choose-a-theme" class="slide level2">
+<h2>Step 4 — Choose a Theme</h2>
+<p>Which theme fits your context?</p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/step5-themes-1.png" alt="Four small scatter plots showing the same ACS state income data with four different themes: gray (default), minimal, bw, and classic." width="960" class="r-stretch"><div class="vt-card">
+<p><strong>Safe default:</strong> <code>theme_minimal()</code> — clean, works for reports and presentations. Use the <strong>same theme</strong> across every figure in your project for consistency.</p>
+</div>
+</section>
+<section id="step-5-apply-theme" class="slide level2">
+<h2>Step 5 — Apply Theme</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income, <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Education Attainment and Household Income by State, 2022"</span>,</span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">x       =</span> <span class="st">"Bachelor's Degree or Higher (%)"</span>,</span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">color   =</span> <span class="st">"Census Region"</span>,</span>
+<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span></span>
+<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>, <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="step-5-fix-the-axis-scale" class="slide level2">
+<h2>Step 5 — Fix the Axis Scale</h2>
+<p>ggplot2 pads axes by default — dead whitespace at the edges hides where the data actually lives. Zoom in with <code>coord_cartesian()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income, <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_dollar</span>(<span class="at">scale =</span> <span class="fl">1e-3</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="cn">NA</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">40000</span>, <span class="dv">100000</span>)) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Education Attainment and Household Income by State, 2022"</span>,</span>
+<span id="cb9-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">x       =</span> <span class="st">"Bachelor's Degree or Higher (%)"</span>,</span>
+<span id="cb9-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">y       =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb9-12"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">color   =</span> <span class="st">"Census Region"</span>,</span>
+<span id="cb9-13"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span></span>
+<span id="cb9-14"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb9-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>, <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/step6-scale-1.png" alt="Scatter plot of education vs income with axis limits set to show the data range: y from $40k to $100k, x from 20%." width="768" class="r-stretch"><div class="vt-card">
+<p><code>coord_cartesian(xlim, ylim)</code> clips the view <strong>without dropping data</strong> — the trend line still uses all observations. Compare to <code>xlim()</code> / <code>ylim()</code>, which silently remove points outside the range.</p>
+</div>
+</section>
+<section id="step-6-in-graph-text-annotations" class="slide level2">
+<h2>Step 6 — In-Graph Text &amp; Annotations</h2>
+<p>Four tools — use the right one for the job:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>geom_text()</code></td>
+<td>Quick plain-text labels at data coordinates</td>
+</tr>
+<tr class="even">
+<td><code>geom_text_repel()</code></td>
+<td>Plain text that auto-repositions to avoid overlap</td>
+</tr>
+<tr class="odd">
+<td><code>geom_label_repel()</code></td>
+<td>Text + background box, auto-repositioned</td>
+</tr>
+<tr class="even">
+<td><code>annotate()</code></td>
+<td>Fixed callouts at exact coordinates (not tied to a data row)</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Base chart used for all four examples (defined once in setup)</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>base_ann <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income, <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span> <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_dollar</span>(<span class="at">scale =</span> <span class="fl">1e-3</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="cn">NA</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">40000</span>, <span class="dv">100000</span>)) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Bachelor's (%)"</span>, <span class="at">y =</span> <span class="st">"Median Income"</span>, <span class="at">color =</span> <span class="st">"Region"</span>) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="geom_text-basic-labels" class="slide level2">
+<h2><code>geom_text()</code> — Basic Labels</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>base_ann <span class="sc">+</span></span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> state_outliers, <span class="fu">aes</span>(<span class="at">label =</span> NAME),</span>
+<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="fl">2.8</span>, <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"#2D2D2D"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/ann-geom-text-1.png" alt="State scatter with plain text labels on 7 outlier states using geom_text — some labels overlap." width="864" class="r-stretch"><div class="vt-card">
+<p><strong>North Carolina</strong> (~40% college, income &lt; $70k) sits below the national trend — high education, lower wages.</p>
+</div>
+</section>
+<section id="geom_text_repel-auto-repositioned-plain-text" class="slide level2">
+<h2><code>geom_text_repel()</code> — Auto-repositioned Plain Text</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>base_ann <span class="sc">+</span></span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data =</span> state_outliers, <span class="fu">aes</span>(<span class="at">label =</span> NAME),</span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> <span class="fl">2.8</span>, <span class="at">box.padding =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">"#2D2D2D"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/ann-text-repel-1.png" alt="State scatter with geom_text_repel labels that avoid overlap automatically." width="864" class="r-stretch"></section>
+<section id="geom_label_repel-labels-with-background-box" class="slide level2">
+<h2><code>geom_label_repel()</code> — Labels with Background Box</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>base_ann <span class="sc">+</span></span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="at">data =</span> state_outliers, <span class="fu">aes</span>(<span class="at">label =</span> NAME),</span>
+<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="fl">2.8</span>, <span class="at">box.padding =</span> <span class="fl">0.5</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/ann-label-repel-1.png" alt="State scatter with geom_label_repel labels with white background boxes — easier to read on busy charts." width="864" class="r-stretch"></section>
+<section id="annotate-fixed-editorial-callouts" class="slide level2">
+<h2><code>annotate()</code> — Fixed Editorial Callouts</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a>base_ann <span class="sc">+</span></span>
+<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="dv">38</span>, <span class="at">xmax =</span> <span class="dv">46</span>, <span class="at">ymin =</span> <span class="dv">74000</span>, <span class="at">ymax =</span> <span class="dv">100000</span>,</span>
+<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">fill =</span> <span class="st">"#861F41"</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">42</span>, <span class="at">y =</span> <span class="dv">104000</span>,</span>
+<span id="cb14-5"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"High-ed, high-income</span><span class="sc">\n</span><span class="st">cluster"</span>,</span>
+<span id="cb14-6"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">color =</span> <span class="st">"#861F41"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/ann-annotate-1.png" alt="State scatter with a shaded rectangle and text callout highlighting the high-education high-income cluster." width="864" class="r-stretch"><div class="vt-card">
+<p><code>annotate()</code> is not data-driven — places shapes/text at <strong>exact coordinates</strong>. Use for region highlights, reference lines, or editorial notes.</p>
+</div>
+</section>
+<section id="skeleton-publish-ready" class="slide level2">
+<h2>Skeleton → Publish-Ready</h2>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/before-after-1.png" alt="Side-by-side: bare skeleton scatter on the left, fully polished state education vs income scatter on the right." width="1152" class="r-stretch"><div class="vt-card">
+<p>→ Open <code>R/demos/dataviz01/01-workflow.R</code> to run all 7 steps interactively — run each section with Ctrl+Enter and watch the chart evolve.</p>
+</div>
+</section>
+<section id="step-7-save-with-ggsave" class="slide level2">
+<h2>Step 7 — Save with <code>ggsave()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>final_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(state_data, ...) <span class="sc">+</span> ...   <span class="co"># assign your complete plot</span></span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">"figures/state_income_education_2022.png"</span>,</span>
+<span id="cb15-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot     =</span> final_plot,</span>
+<span id="cb15-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">width    =</span> <span class="dv">10</span>,</span>
+<span id="cb15-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">height   =</span> <span class="fl">5.5</span>,</span>
+<span id="cb15-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi      =</span> <span class="dv">300</span></span>
+<span id="cb15-9"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>PNG</strong> 300 dpi</td>
+<td>Reports, Word, presentations</td>
+</tr>
+<tr class="even">
+<td><strong>PDF</strong></td>
+<td>Journal submissions, LaTeX — vector, no blur</td>
+</tr>
+</tbody>
+</table>
+<div class="vt-card">
+<p>Always specify <code>width</code> and <code>height</code> explicitly — this controls the aspect ratio. After saving, zoom into the PNG at 100% to check it is not blurry (dpi = 300 is usually enough for print).</p>
+</div>
+</section>
+<section id="spot-the-issue" class="slide level2 section-slide" data-background-color="#861F41">
+<h2>Spot the Issue</h2>
+</section>
+<section id="spot-the-issue-plot-1" class="slide level2">
+<h2>Spot the Issue — Plot 1</h2>
+<p><strong>Scenario:</strong> Mean body mass (g) for three penguin species. <em>(Anything wrong?)</em></p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw1-1.png" alt="Bar chart of mean penguin body mass by species with y-axis starting at 3000 instead of 0 — misleading." width="768" class="r-stretch"></section>
+<section id="plot-1-answer" class="slide level2">
+<h2>Plot 1 — Answer</h2>
+<p><strong>Problem: Y-axis starts at 3,000 g, not 0.</strong> Bars encode <em>length from zero</em> — truncating makes Gentoo look 3 times heavier than Adélie; the true ratio is ~1.4×.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_c <span class="sc">|&gt;</span> <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">m =</span> <span class="fu">mean</span>(body_mass_g)) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> m, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> okabe3) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_comma</span>()) <span class="sc">+</span>   <span class="co"># no coord_cartesian cutoff</span></span>
+<span id="cb16-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean Body Mass by Species (y-axis from 0)"</span>,</span>
+<span id="cb16-8"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Mean Body Mass (g)"</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="" aria-hidden="true" tabindex="-1"></a>  flaw_theme</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw1-fix-1.png" alt="Corrected bar chart with y-axis starting at 0 — proportions now accurate." width="768" class="r-stretch"></section>
+<section id="spot-the-issue-plot-2" class="slide level2">
+<h2>Spot the Issue — Plot 2</h2>
+<p><strong>Scenario:</strong> Comparing bill length vs body mass for Adélie and Gentoo penguins. <em>(Anything wrong?)</em></p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw2-1.png" alt="Scatter of bill length vs body mass colored red and green — fails for red-green colorblind readers." width="768" class="r-stretch"></section>
+<section id="plot-2-answer" class="slide level2">
+<h2>Plot 2 — Answer</h2>
+<p><strong>Problem: Red + green fail for ~8% of men</strong> (red-green color vision deficiency). The two groups become indistinguishable.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_c <span class="sc">|&gt;</span> <span class="fu">filter</span>(species <span class="sc">!=</span> <span class="st">"Chinstrap"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> body_mass_g, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Adelie"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>, <span class="st">"Gentoo"</span> <span class="ot">=</span> <span class="st">"#56B4E9"</span>)) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bill Length vs Body Mass (colorblind-safe palette)"</span>,</span>
+<span id="cb17-6"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>, <span class="at">y =</span> <span class="st">"Body Mass (g)"</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="" aria-hidden="true" tabindex="-1"></a>  flaw_theme <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw2-fix-1.png" alt="Corrected scatter using Okabe-Ito colors — distinguishable for colorblind readers." width="768" class="r-stretch"><div class="vt-card">
+<p>Okabe-Ito (<code>#E69F00</code>, <code>#56B4E9</code>, <code>#009E73</code>) and <code>scale_color_viridis_d()</code> are safe for all common color vision types.</p>
+</div>
+</section>
+<section id="spot-the-issue-plot-3" class="slide level2">
+<h2>Spot the Issue — Plot 3</h2>
+<p><strong>Scenario:</strong> Average income by Census region, pulled straight from the ACS API. <em>(Anything wrong?)</em></p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw3-1.png" alt="Bar chart using raw ACS variable codes B19013_001 as axis label instead of a human-readable name." width="768" class="r-stretch"></section>
+<section id="plot-3-answer" class="slide level2">
+<h2>Plot 3 — Answer</h2>
+<p><strong>Problem: Raw API variable codes as axis labels.</strong> <code>B19013_001</code> means nothing to a reader. Always rename with <code>labs()</code> or rename columns before plotting.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>state_data <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_income =</span> <span class="fu">mean</span>(median_income)) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> region, <span class="at">y =</span> avg_income, <span class="at">fill =</span> region)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>, <span class="st">"#861F41"</span>)) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_dollar</span>(<span class="at">scale =</span> <span class="fl">1e-3</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Median Household Income by Census Region, 2022"</span>,</span>
+<span id="cb18-9"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Census Region"</span>, <span class="at">y =</span> <span class="st">"Average Median Income"</span>,</span>
+<span id="cb18-10"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="" aria-hidden="true" tabindex="-1"></a>  flaw_theme</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw3-fix-1.png" alt="Corrected bar chart with human-readable labels: Median Household Income by Census Region." width="768" class="r-stretch"></section>
+<section id="spot-the-issue-plot-4" class="slide level2">
+<h2>Spot the Issue — Plot 4</h2>
+<p><strong>Scenario:</strong> Number of countries per continent in the 2007 gapminder dataset. <em>(Anything wrong?)</em></p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw4-1.png" alt="Pie chart of country counts by continent — five similar-sized slices, hard to compare precisely." width="768" class="r-stretch"></section>
+<section id="plot-4-answer" class="slide level2">
+<h2>Plot 4 — Answer</h2>
+<p><strong>Problem: Pie charts require judging angles</strong> — humans are poor at this, especially when slices are similar. A sorted bar is always more readable.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>gap07 <span class="sc">|&gt;</span> <span class="fu">count</span>(continent) <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(continent, n), <span class="at">y =</span> n, <span class="at">fill =</span> continent)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb19-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Countries by Continent in 2007"</span>,</span>
+<span id="cb19-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Number of Countries"</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="" aria-hidden="true" tabindex="-1"></a>  flaw_theme</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw4-fix-1.png" alt="Corrected horizontal sorted bar chart — countries by continent, directly readable." width="768" class="r-stretch"></section>
+<section id="spot-the-issue-plot-5" class="slide level2">
+<h2>Spot the Issue — Plot 5</h2>
+<p><strong>Scenario:</strong> Distribution of species count by region — student copied ggplot defaults and did not touch <code>theme()</code>. <em>(Anything wrong?)</em></p>
+
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw5-1.png" alt="Bar chart with x-axis category labels overlapping each other because the text is too long and not rotated." width="768" class="r-stretch"></section>
+<section id="plot-5-answer" class="slide level2">
+<h2>Plot 5 — Answer</h2>
+<p><strong>Problem: Long x-axis labels overlap and become unreadable.</strong> Fix with <code>coord_flip()</code> or <code>theme(axis.text.x = element_text(angle = 30, hjust = 1))</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a>state_data <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">income_tier =</span> <span class="fu">cut</span>(median_income,</span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">quantile</span>(median_income, <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">25</span>, .<span class="dv">5</span>, .<span class="dv">75</span>, <span class="dv">1</span>)),</span>
+<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Bottom 25%"</span>, <span class="st">"25–50th Pct"</span>, <span class="st">"50–75th Pct"</span>, <span class="st">"Top 25%"</span>),</span>
+<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">include.lowest =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(income_tier) <span class="sc">|&gt;</span></span>
+<span id="cb20-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(income_tier, n), <span class="at">y =</span> n, <span class="at">fill =</span> income_tier)) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>, <span class="st">"#861F41"</span>)) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb20-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"States by Income Tier"</span>,</span>
+<span id="cb20-12"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Number of States"</span>) <span class="sc">+</span></span>
+<span id="cb20-13"><a href="" aria-hidden="true" tabindex="-1"></a>  flaw_theme</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/flaw5-fix-1.png" alt="Corrected chart using coord_flip so long category labels are on the y-axis and fully readable." width="768" class="r-stretch"></section>
+<section id="static-maps-with-geom_sf" class="slide level2 section-slide" data-background-color="#861F41">
+<h2>Static Maps with <code>geom_sf</code></h2>
+</section>
+<section id="why-geom_sf" class="slide level2">
+<h2>Why <code>geom_sf</code>?</h2>
+<p>You already know <code>leaflet</code> for interactive maps. <code>geom_sf</code> is different:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th><code>geom_sf</code> (ggplot2)</th>
+<th><code>leaflet</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Output</td>
+<td>Static — PNG, PDF</td>
+<td>Interactive HTML</td>
+</tr>
+<tr class="even">
+<td>Grammar</td>
+<td>Same as all other ggplot2</td>
+<td>Separate syntax</td>
+</tr>
+<tr class="odd">
+<td>Use for</td>
+<td>Reports, papers, posters</td>
+<td>Dashboards, web apps</td>
+</tr>
+<tr class="even">
+<td>Theming</td>
+<td><code>theme()</code>, <code>labs()</code>, <code>ggsave()</code></td>
+<td>Own legend/layout system</td>
+</tr>
+</tbody>
+</table>
+<div class="vt-card">
+<p><code>geom_sf</code> is just another geom. Everything you learned today — color palettes, <code>labs()</code>, <code>theme_void()</code>, <code>ggsave()</code> — applies directly to maps.</p>
+</div>
+</section>
+<section id="what-is-an-sf-object" class="slide level2">
+<h2>What Is an <code>sf</code> Object?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spData)</span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"us_states"</span>, <span class="at">package =</span> <span class="st">"spData"</span>)</span>
+<span id="cb21-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="" aria-hidden="true" tabindex="-1"></a>us_states <span class="sc">|&gt;</span></span>
+<span id="cb21-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NAME, REGION, total_pop_10, total_pop_15) <span class="sc">|&gt;</span></span>
+<span id="cb21-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 4 features and 4 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -114.8136 ymin: 30.24971 xmax: -71.78699 ymax: 42.04964
+Geodetic CRS:  NAD83
+         NAME   REGION total_pop_10 total_pop_15                       geometry
+1     Alabama    South      4712651      4830620 MULTIPOLYGON (((-88.20006 3...
+2     Arizona     West      6246816      6641928 MULTIPOLYGON (((-114.7196 3...
+3    Colorado     West      4887061      5278906 MULTIPOLYGON (((-109.0501 4...
+4 Connecticut Norteast      3545837      3593222 MULTIPOLYGON (((-73.48731 4...</code></pre>
+</div>
+</div>
+<ul>
+<li>An <code>sf</code> object is a <strong>regular data frame with a geometry column</strong></li>
+<li>Use any <code>dplyr</code> verb on it exactly as you would a tibble</li>
+<li><code>geom_sf()</code> reads the geometry column automatically — no <code>x</code>/<code>y</code> needed</li>
+</ul>
+</section>
+<section id="your-first-choropleth" class="slide level2">
+<h2>Your First Choropleth</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(us_states) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> total_pop_15)) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb23-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">name   =</span> <span class="st">"Population (2015)"</span>,</span>
+<span id="cb23-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">scale =</span> <span class="fl">1e-6</span>, <span class="at">suffix =</span> <span class="st">"M"</span>)</span>
+<span id="cb23-6"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"US State Population, 2015"</span>,</span>
+<span id="cb23-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: spData package"</span></span>
+<span id="cb23-11"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/geom-sf-basic-1.png" alt="Choropleth map of US states colored by total population in 2015 using geom_sf and a viridis color scale." width="864" class="r-stretch"><aside class="notes">
+<p>theme_void() removes axes and background grid — the right default for maps. geom_sf() reads the geometry column automatically so we only map fill to the data variable.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tidycensus-one-call-gets-data-map" class="slide level2">
+<h2><code>tidycensus</code> — One Call Gets Data + Map</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>va_income <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"county"</span>,</span>
+<span id="cb24-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">state     =</span> <span class="st">"VA"</span>,</span>
+<span id="cb24-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">"B19013_001"</span>,   <span class="co"># median household income</span></span>
+<span id="cb24-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">year      =</span> <span class="dv">2022</span>,</span>
+<span id="cb24-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">geometry  =</span> <span class="cn">TRUE</span>            <span class="co"># returns an sf object directly — no separate download</span></span>
+<span id="cb24-9"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(va_income) <span class="sc">+</span></span>
+<span id="cb24-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> estimate), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb24-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb24-14"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">name   =</span> <span class="st">"Median Income (USD)"</span>,</span>
+<span id="cb24-15"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_dollar</span>()</span>
+<span id="cb24-16"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="dv">5070</span>) <span class="sc">+</span>     <span class="co"># Albers equal-area — better for US maps</span></span>
+<span id="cb24-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb24-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-20"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title   =</span> <span class="st">"Median Household Income by County, Virginia 2022"</span>,</span>
+<span id="cb24-21"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: American Community Survey 2022"</span></span>
+<span id="cb24-22"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="vt-card">
+<p><code>geometry = TRUE</code> returns an <code>sf</code> object directly — no shapefile, no join, one step.</p>
+</div>
+</section>
+<section id="joining-your-own-data-to-a-map" class="slide level2">
+<h2>Joining Your Own Data to a Map</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Pattern: join any project data frame to county geometries</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)</span>
+<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="" aria-hidden="true" tabindex="-1"></a>counties_sf <span class="ot">&lt;-</span> <span class="fu">counties</span>(<span class="at">state =</span> <span class="st">"VA"</span>, <span class="at">cb =</span> <span class="cn">TRUE</span>, <span class="at">year =</span> <span class="dv">2022</span>)</span>
+<span id="cb25-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/my_county_metrics.csv"</span>)</span>
+<span id="cb25-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># my_data must have a GEOID column (5-digit FIPS code)</span></span>
+<span id="cb25-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="" aria-hidden="true" tabindex="-1"></a>counties_joined <span class="ot">&lt;-</span> counties_sf <span class="sc">|&gt;</span></span>
+<span id="cb25-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(my_data, <span class="at">by =</span> <span class="st">"GEOID"</span>)</span>
+<span id="cb25-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(counties_joined) <span class="sc">+</span></span>
+<span id="cb25-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> your_metric), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb25-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb25-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="dv">5070</span>) <span class="sc">+</span></span>
+<span id="cb25-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Same <code>left_join()</code> you already know — the only difference is the data frame has a geometry column.</p>
+</section>
+<section id="saving-a-map" class="slide level2">
+<h2>Saving a Map</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a>my_map <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(va_income) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">labels =</span> <span class="fu">label_dollar</span>()) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="dv">5070</span>) <span class="sc">+</span></span>
+<span id="cb26-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb26-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Median Income, Virginia 2022"</span>)</span>
+<span id="cb26-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb26-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"figures/va_income_map.png"</span>,</span>
+<span id="cb26-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot   =</span> my_map,</span>
+<span id="cb26-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">width  =</span> <span class="dv">10</span>,</span>
+<span id="cb26-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">6</span>,</span>
+<span id="cb26-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi    =</span> <span class="dv">300</span></span>
+<span id="cb26-14"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Exactly the same as any other ggplot — <code>ggsave()</code> with explicit width, height, dpi.</p>
+</section>
+<section id="faceting-multi-panel-layouts" class="slide level2 section-slide" data-background-color="#861F41">
+<h2>Faceting &amp; Multi-panel Layouts</h2>
+</section>
+<section id="facet_wrap-small-multiples" class="slide level2">
+<h2><code>facet_wrap()</code> — Small Multiples</h2>
+<p><strong>Q: Does the income–education relationship differ across Census regions?</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> median_income)) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#861F41"</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"#E5751F"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_dollar</span>(<span class="at">scale =</span> <span class="fl">1e-3</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> region, <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Education vs Income by Census Region"</span>,</span>
+<span id="cb27-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Bachelor's Degree or Higher (%)"</span>, <span class="at">y =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb27-8"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span>) <span class="sc">+</span></span>
+<span id="cb27-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/facet-wrap-1.png" alt="Four scatter plots side by side, one per Census region, showing education vs income with a trend line." width="960" class="r-stretch"><p>Use <code>scales = "free_x"</code> or <code>"free"</code> to let axis ranges differ across panels.</p>
+</section>
+<section id="facet_grid-two-way-panels" class="slide level2">
+<h2><code>facet_grid()</code> — Two-way Panels</h2>
+<p><strong>Q: Is the gender gap in college attainment consistent across regions?</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Requires tidycensus — run once and save locally</span></span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>vars_sex <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">inc_median  =</span> <span class="st">"B19013_001"</span>,</span>
+<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">ed_total    =</span> <span class="st">"B15002_001"</span>,</span>
+<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">col_male    =</span> <span class="st">"B15002_015"</span>,</span>
+<span id="cb28-6"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">col_female  =</span> <span class="st">"B15002_032"</span>)</span>
+<span id="cb28-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="" aria-hidden="true" tabindex="-1"></a>state_sex <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">"state"</span>, <span class="at">variables =</span> vars_sex,</span>
+<span id="cb28-9"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">output =</span> <span class="st">"wide"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct_male   =</span> col_maleE   <span class="sc">/</span> (ed_totalE <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb28-11"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">pct_female =</span> col_femaleE <span class="sc">/</span> (ed_totalE <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(state_data <span class="sc">|&gt;</span> <span class="fu">select</span>(NAME, region), <span class="at">by =</span> <span class="st">"NAME"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(region)) <span class="sc">|&gt;</span></span>
+<span id="cb28-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(pct_male, pct_female),</span>
+<span id="cb28-15"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"sex"</span>, <span class="at">values_to =</span> <span class="st">"pct_college"</span>,</span>
+<span id="cb28-16"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_prefix =</span> <span class="st">"pct_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">str_to_title</span>(sex))</span>
+<span id="cb28-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_sex, <span class="fu">aes</span>(<span class="at">x =</span> pct_college, <span class="at">y =</span> inc_medianE)) <span class="sc">+</span></span>
+<span id="cb28-20"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#861F41"</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb28-21"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_dollar</span>(<span class="at">scale =</span> <span class="fl">1e-3</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
+<span id="cb28-22"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(sex <span class="sc">~</span> region) <span class="sc">+</span></span>
+<span id="cb28-23"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"College Attainment vs Income — Sex × Region"</span>,</span>
+<span id="cb28-24"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Bachelor's Degree (%)"</span>, <span class="at">y =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb28-25"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Source: ACS 5-Year Estimates 2022"</span>) <span class="sc">+</span></span>
+<span id="cb28-26"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<aside class="notes">
+<p>facet_grid(sex ~ region) creates 2 rows × 4 columns = 8 panels. Pattern: female college attainment now exceeds male in most regions, but income gaps persist. This is the ACS question about gender gap in college attainment.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="patchwork-combining-different-plots" class="slide level2">
+<h2><code>patchwork</code> — Combining Different Plots</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>p_scatter <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(penguins <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(),</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> flipper_length_mm, <span class="at">y =</span> body_mass_g, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>)) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Flipper (mm)"</span>, <span class="at">y =</span> <span class="st">"Mass (g)"</span>)</span>
+<span id="cb29-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="" aria-hidden="true" tabindex="-1"></a>p_bar <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(penguins <span class="sc">|&gt;</span> <span class="fu">drop_na</span>() <span class="sc">|&gt;</span> <span class="fu">count</span>(species),</span>
+<span id="cb29-9"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb29-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb29-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>)) <span class="sc">+</span></span>
+<span id="cb29-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb29-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span>
+<span id="cb29-14"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="" aria-hidden="true" tabindex="-1"></a>p_box <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(penguins <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(),</span>
+<span id="cb29-16"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> bill_length_mm, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb29-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb29-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>)) <span class="sc">+</span></span>
+<span id="cb29-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb29-20"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Bill (mm)"</span>)</span>
+<span id="cb29-21"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-22"><a href="" aria-hidden="true" tabindex="-1"></a>((p_scatter <span class="sc">|</span> p_bar) <span class="sc">/</span> p_box) <span class="sc">+</span></span>
+<span id="cb29-23"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb29-24"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title      =</span> <span class="st">"Palmer Penguins: a three-panel summary"</span>,</span>
+<span id="cb29-25"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption    =</span> <span class="st">"Source: palmerpenguins package"</span>,</span>
+<span id="cb29-26"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag_levels =</span> <span class="st">"A"</span></span>
+<span id="cb29-27"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/patchwork-build-1.png" alt="Three different plot types combined into one patchwork figure: scatter, bar, and boxplot." width="960" class="r-stretch"></section>
+<section id="patchwork-operators" class="slide level2">
+<h2><code>patchwork</code> Operators</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>p1 | p2</code></td>
+<td>Side by side</td>
+</tr>
+<tr class="even">
+<td><code>p1 / p2</code></td>
+<td>Stacked vertically</td>
+</tr>
+<tr class="odd">
+<td><code>(p1 | p2) / p3</code></td>
+<td>Two on top, one full-width below</td>
+</tr>
+<tr class="even">
+<td><code>plot_layout(widths = c(2, 1))</code></td>
+<td>Left panel twice as wide as right</td>
+</tr>
+<tr class="odd">
+<td><code>plot_layout(guides = "collect")</code></td>
+<td>Move all legends to one shared legend</td>
+</tr>
+<tr class="even">
+<td><code>plot_annotation(tag_levels = "A")</code></td>
+<td>Add panel labels A, B, C …</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Unequal widths: scatter gets 2/3 of the space, bar + box share 1/3</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>(p_scatter <span class="sc">|</span> (p_bar <span class="sc">/</span> p_box)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">title      =</span> <span class="st">"Palmer Penguins: a three-panel summary"</span>,</span>
+<span id="cb30-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption    =</span> <span class="st">"Source: palmerpenguins package"</span>,</span>
+<span id="cb30-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag_levels =</span> <span class="st">"A"</span></span>
+<span id="cb30-8"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="dataviz-01-ggplot2-advanced_files/figure-revealjs/patchwork-layout-1.png" alt="Three penguin plots combined with patchwork: scatter on left (wider), bar and box stacked on the right." width="960" class="r-stretch"><div class="vt-card">
+<p>→ Open <code>R/demos/dataviz01/02-patchwork.R</code> to try all four patchwork layout operators (<code>|</code>, <code>/</code>, compound, and unequal widths) interactively.</p>
+</div>
+</section>
+<section id="your-turn" class="slide level2 section-slide" data-background-color="#E5751F">
+<h2>Your Turn</h2>
+<p><strong>Q: Do states with higher poverty rates have lower median incomes?</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>state_pov <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">"state"</span>,</span>
+<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">pov_count  =</span> <span class="st">"B17001_002"</span>,   <span class="co"># people below poverty line</span></span>
+<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">pov_total  =</span> <span class="st">"B17001_001"</span>,   <span class="co"># total people w/ poverty status</span></span>
+<span id="cb31-7"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">inc_median =</span> <span class="st">"B19013_001"</span>),  <span class="co"># median household income</span></span>
+<span id="cb31-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2022</span>, <span class="at">output =</span> <span class="st">"wide"</span></span>
+<span id="cb31-9"><a href="" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb31-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pov_rate =</span> pov_countE <span class="sc">/</span> pov_totalE) <span class="sc">|&gt;</span></span>
+<span id="cb31-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(state_data <span class="sc">|&gt;</span> <span class="fu">select</span>(NAME, region), <span class="at">by =</span> <span class="st">"NAME"</span>)</span>
+<span id="cb31-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Tasks:</span></span>
+<span id="cb31-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Scatter: pov_rate (x) vs inc_medianE (y), color = region</span></span>
+<span id="cb31-15"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. scale_x_continuous(labels = label_percent())</span></span>
+<span id="cb31-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. scale_y_continuous(labels = label_dollar(scale = 1e-3, suffix = "k"))</span></span>
+<span id="cb31-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Add geom_smooth(method = "lm", se = FALSE, color = "gray40")</span></span>
+<span id="cb31-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Label 3 highest-poverty + 3 lowest-poverty states with geom_label_repel()</span></span>
+<span id="cb31-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Apply your full 7-step workflow (color, theme, axis, title, ggsave)</span></span>
+<span id="cb31-20"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. One sentence: what does this scatter tell you?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="key-takeaways" class="slide level2 section-slide" data-background-color="#861F41">
+<h2>Key Takeaways</h2>
+</section>
+<section id="key-takeaways-1" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li><strong>Every plot needs one sentence</strong> — if you cannot write it, the chart is not done</li>
+<li><strong>7-step workflow</strong> — Skeleton → Labels → Color → Theme → Axis → In-graph text → Save</li>
+<li><strong>Color has rules</strong> — Okabe-Ito / viridis_d for categories; viridis_c for sequential; RdBu for diverging; max 5–6 colors; always colorblind-safe</li>
+<li><strong>Match chart to data situation</strong> — continuous distribution → histogram; categorical × continuous → boxplot/violin; two continuous → scatter; time + composition → stacked area; two categorical → heatmap</li>
+<li><strong>Faceting</strong> splits one plot by a categorical variable; <code>patchwork</code> combines different plot types</li>
+<li><strong><code>ggsave()</code></strong> with explicit width and height — set the aspect ratio, then zoom in to check the saved PNG is not blurry</li>
+</ul>
+<aside class="notes">
+<p>The workflow habit is the most transferable skill. A plot that starts as 3 lines and ends as 20 is normal — those extra lines are intentional decisions, not complexity. Each one makes the figure communicate better.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>DSPG 2026 | Virginia Tech</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="dataviz-01-ggplot2-advanced_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
