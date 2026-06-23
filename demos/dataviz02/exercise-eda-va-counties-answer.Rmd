@@ -1,0 +1,317 @@
+---
+title: "EDA Exercise: Poverty and Income in Virginia Counties"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(skimr)
+library(tidycensus)
+```
+
+## Research Question
+
+**Q: Do counties with higher poverty rates have lower median incomes?**
+
+We will answer this using the 6-step EDA workflow on Virginia county-level ACS data.
+
+---
+
+## Load the Data
+
+Run `get_acs()` once (requires a free Census API key). If you don't have one yet,
+register at <https://api.census.gov/data/key_signup.html> and run:
+`tidycensus::census_api_key("YOUR_KEY", install = TRUE)`
+
+```{r load-data}
+va_counties <- get_acs(
+  geography = "county",
+  state     = "VA",
+  variables = c(
+    median_income = "B19013_001",   # median household income
+    pov_count     = "B17001_002",   # people below poverty line
+    pov_total     = "B17001_001",   # total for whom poverty status determined
+    pct_college   = "B15003_022"    # bachelor's degree holders (25+)
+  ),
+  year   = 2022,
+  output = "wide"
+) |>
+  mutate(
+    pov_rate    = pov_countE / pov_totalE,
+    county_name = str_remove(NAME, ", Virginia")
+  )
+
+glimpse(va_counties)
+```
+
+---
+
+## Step 1 — Summary Statistics
+
+Use `skim()` to get a full picture of the dataset before anything else.
+
+```{r step1-skim}
+va_counties |>
+  select(county_name, median_incomeE, pov_rate, pct_collegeE) |>
+  skim()
+```
+
+**Questions to answer:**
+
+1. How many counties are in this dataset? How many variables?
+2. Are there any variables with missing values (`n_missing > 0`)? Which ones?
+3. What is the range of `median_incomeE`? Does the minimum or maximum look suspicious?
+4. What is the range of `pov_rate`? Does it stay between 0 and 1?
+
+*Your answers here:*
+
+
+---
+
+## Step 2 — Spot Problems in the Numbers
+
+Check for missingness and impossible values.
+
+```{r step2-missing}
+# Which variables have missing values?
+va_counties |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything(), names_to = "variable", values_to = "n_missing") |>
+  filter(n_missing > 0)
+```
+
+```{r step2-range}
+# Check value ranges
+va_counties |>
+  summarise(
+    income_min = min(median_incomeE, na.rm = TRUE),
+    income_max = max(median_incomeE, na.rm = TRUE),
+    pov_min    = min(pov_rate, na.rm = TRUE),
+    pov_max    = max(pov_rate, na.rm = TRUE)
+  )
+```
+
+**Questions to answer:**
+
+5. Are any poverty rates outside the range [0, 1]? If so, which counties?
+6. Is there any missingness that concerns you? What might explain it?
+
+*Your answers here:*
+
+
+---
+
+## Step 3 — Hidden Missing Values
+
+Check for sentinel codes and implicitly missing data.
+
+```{r step3-sentinel}
+# Are any income values coded as 0 or negative (common data error)?
+va_counties |>
+  filter(median_incomeE <= 0 | is.na(median_incomeE)) |>
+  select(county_name, median_incomeE)
+```
+
+```{r step3-implicit}
+# Do all 133 Virginia counties appear?
+# (Expected: 133 counties + some independent cities)
+n_distinct(va_counties$GEOID)
+```
+
+**Questions to answer:**
+
+7. Are there any zero or negative income values?
+8. Are any counties missing entirely from the dataset? What might explain that?
+
+*Your answers here:*
+
+
+---
+
+## Step 4 — Anomalies and Outliers
+
+Use a box plot to identify outlier counties.
+
+```{r step4-boxplot}
+va_counties |>
+  ggplot(aes(y = median_incomeE)) +
+  geom_boxplot(fill = "#861F41", alpha = 0.6, outlier.color = "#E5751F", outlier.size = 2) +
+  scale_y_continuous(labels = scales::label_dollar(scale = 1e-3, suffix = "k")) +
+  labs(
+    title = "Distribution of Median Household Income — Virginia Counties",
+    y     = "Median Household Income"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+```{r step4-identify}
+# Which counties are outliers (above 75th percentile + 1.5 × IQR)?
+q75  <- quantile(va_counties$median_incomeE, 0.75, na.rm = TRUE)
+q25  <- quantile(va_counties$median_incomeE, 0.25, na.rm = TRUE)
+iqr  <- q75 - q25
+
+va_counties |>
+  filter(median_incomeE > q75 + 1.5 * iqr) |>
+  select(county_name, median_incomeE) |>
+  arrange(desc(median_incomeE))
+```
+
+**Questions to answer:**
+
+9. Which counties appear as high-income outliers? Are they data errors or real extreme cases?
+10. Should you drop them or keep them? Why?
+
+*Your answers here:*
+
+
+---
+
+## Step 5 — Distribution Shape
+
+Examine the shape of your key variables.
+
+```{r step5-hist-income}
+va_counties |>
+  ggplot(aes(x = median_incomeE)) +
+  geom_histogram(bins = 25, fill = "#861F41", color = "white") +
+  scale_x_continuous(labels = scales::label_dollar(scale = 1e-3, suffix = "k")) +
+  labs(
+    title = "Distribution of Median Household Income",
+    x     = "Median Income",
+    y     = "Count"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+```{r step5-hist-pov}
+va_counties |>
+  ggplot(aes(x = pov_rate)) +
+  geom_histogram(bins = 25, fill = "#E5751F", color = "white") +
+  scale_x_continuous(labels = scales::label_percent()) +
+  labs(
+    title = "Distribution of Poverty Rate",
+    x     = "Poverty Rate",
+    y     = "Count"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+```{r step5-log}
+# Try log transformation on income — does it look more symmetric?
+va_counties |>
+  ggplot(aes(x = log(median_incomeE))) +
+  geom_histogram(bins = 25, fill = "#861F41", color = "white") +
+  labs(
+    title = "log(Median Household Income) — More Symmetric?",
+    x     = "log(Median Income)",
+    y     = "Count"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+**Questions to answer:**
+
+11. Is `median_incomeE` right-skewed, left-skewed, or roughly symmetric?
+12. Is `pov_rate` right-skewed, left-skewed, or roughly symmetric?
+13. Does the log transformation of income look more symmetric? Would you use it in a regression?
+
+*Your answers here:*
+
+
+---
+
+## Step 6 — Correlations
+
+**Answer the research question: Do counties with higher poverty rates have lower median incomes?**
+
+```{r step6-scatter}
+va_counties |>
+  ggplot(aes(x = pov_rate, y = median_incomeE)) +
+  geom_point(color = "#861F41", alpha = 0.6, size = 2) +
+  geom_smooth(method = "lm", color = "#E5751F", se = TRUE) +
+  scale_x_continuous(labels = scales::label_percent()) +
+  scale_y_continuous(labels = scales::label_dollar(scale = 1e-3, suffix = "k")) +
+  labs(
+    title   = "Poverty Rate vs Median Income — Virginia Counties, 2022",
+    x       = "Poverty Rate",
+    y       = "Median Household Income",
+    caption = "Source: ACS 5-Year Estimates 2022"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+```{r step6-correlation}
+# Compute the correlation coefficient
+cor(va_counties$pov_rate, va_counties$median_incomeE, use = "complete.obs")
+```
+
+```{r step6-label-outliers}
+# Which counties stand out? Label them.
+library(ggrepel)
+
+high_pov  <- va_counties |> slice_max(pov_rate, n = 5)
+high_inc  <- va_counties |> slice_max(median_incomeE, n = 5)
+labeled   <- bind_rows(high_pov, high_inc) |> distinct(GEOID, .keep_all = TRUE)
+
+va_counties |>
+  ggplot(aes(x = pov_rate, y = median_incomeE)) +
+  geom_point(color = "#861F41", alpha = 0.5, size = 2) +
+  geom_smooth(method = "lm", color = "#E5751F", se = TRUE) +
+  geom_label_repel(data = labeled, aes(label = county_name),
+                   size = 2.8, box.padding = 0.4) +
+  scale_x_continuous(labels = scales::label_percent()) +
+  scale_y_continuous(labels = scales::label_dollar(scale = 1e-3, suffix = "k")) +
+  labs(
+    title   = "Poverty Rate vs Median Income — Virginia Counties, 2022",
+    x       = "Poverty Rate",
+    y       = "Median Household Income",
+    caption = "Source: ACS 5-Year Estimates 2022"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+**Questions to answer:**
+
+14. What is the direction and magnitude of the correlation (r = ?)?
+15. In one sentence, describe what the scatterplot shows.
+16. Are there any counties that don't fit the general pattern? Which ones, and why might they be exceptions?
+17. Is this a causal relationship or just an association? What other variables might explain both poverty rate and income?
+
+*Your answers here:*
+
+
+---
+
+## Bonus: Apply to Your Project Data
+
+Replace `va_counties` with your own project data and repeat the 6 steps:
+
+```{r bonus-template, eval=FALSE}
+# Load your project data
+my_data <- read_csv("path/to/your/data.csv")
+
+# Step 1: skim
+my_data |> skim()
+
+# Step 2: Check missingness and ranges
+my_data |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything()) |>
+  filter(value > 0)
+
+# Step 3: Sentinel codes?
+# my_data |> mutate(col = na_if(col, 9999))
+
+# Step 4: Boxplot of your outcome variable
+# my_data |> ggplot(aes(y = YOUR_OUTCOME)) + geom_boxplot()
+
+# Step 5: Histogram of key variables
+# my_data |> ggplot(aes(x = YOUR_VARIABLE)) + geom_histogram()
+
+# Step 6: Scatterplot of your main relationship
+# my_data |> ggplot(aes(x = YOUR_PREDICTOR, y = YOUR_OUTCOME)) +
+#   geom_point() + geom_smooth()
+```
