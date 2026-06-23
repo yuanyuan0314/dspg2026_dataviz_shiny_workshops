@@ -7,9 +7,9 @@ library(leaflet)
 library(sf)
 library(scales)
 
-# Demo: crosstalk â€” DT table + plotly scatter + leaflet map, all linked.
-# Click a row in the table â†’ the scatter and map highlight that county.
-# Lasso/box-select points in the scatter â†’ table and map update to match.
+# Demo: crosstalk -- DT table + plotly scatter + leaflet map, all linked.
+# Click a row in the table -> the scatter and map highlight that county.
+# Lasso/box-select points in the scatter -> table and map update to match.
 #
 # HOW TO RUN: Select all lines and press Ctrl+Enter (or Source).
 # Output appears in the RStudio Viewer pane.
@@ -18,7 +18,7 @@ library(scales)
 # then run: tidycensus::census_api_key("YOUR_KEY", install = TRUE)
 #
 
-# â”€â”€ Pull Virginia county ACS data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Pull Virginia county ACS data ─────────────────────────────────────────────
 va_raw <- get_acs(
   geography = "county",
   state     = "VA",
@@ -45,14 +45,14 @@ va <- va_raw |>
   st_drop_geometry() |>
   select(county, income, poverty_rate, median_age, lng, lat)
 
-# â”€â”€ SharedData: the single object that links all three widgets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── SharedData: the single object that links all three widgets ────────────────
 shared_va <- SharedData$new(va)
 
-# â”€â”€ Layout: table on top, scatter + map side by side below â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Layout: table on top, scatter + map side by side below ───────────────────
 bscols(
   widths = 12,
 
-  # Table â€” click a row to select; selection propagates to scatter and map
+  # Table -- click a row to select; selection propagates to scatter and map
   datatable(
     shared_va,
     rownames = FALSE,
@@ -61,7 +61,7 @@ bscols(
     options  = list(
       pageLength  = 8,
       scrollX     = TRUE,
-      # Hide the lng/lat columns â€” needed by leaflet but not shown to users
+      # Hide the lng/lat columns -- needed by leaflet but not shown to users
       columnDefs  = list(list(visible = FALSE, targets = c(4, 5)))
     ),
     selection = "single"
@@ -70,7 +70,7 @@ bscols(
   bscols(
     widths = c(6, 6),
 
-    # Scatter: income vs poverty rate â€” brush to select a group of counties
+    # Scatter: income vs poverty rate -- brush to select a group of counties
     plot_ly(
       shared_va,
       x      = ~income,
@@ -86,7 +86,7 @@ bscols(
         yaxis = list(title = "Poverty Rate (%)")
       ),
 
-    # Map: one marker per county â€” updates when table row or scatter is selected
+    # Map: one marker per county -- updates when table row or scatter is selected
     leaflet(shared_va) |>
       addTiles() |>
       addCircleMarkers(

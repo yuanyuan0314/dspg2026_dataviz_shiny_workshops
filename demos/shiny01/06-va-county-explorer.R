@@ -6,7 +6,7 @@ library(sf)
 library(scales)
 
 # Demo: Virginia County Explorer
-# selectInput (county + variable) â†’ text headline + leaflet choropleth + summary table
+# selectInput (county + variable) -> text headline + leaflet choropleth + summary table
 # Demonstrates reactive() shared across three different output types.
 #
 # Requires a Census API key. Register free at https://api.census.gov/data/key_signup.html
@@ -54,8 +54,8 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  # reactive(): filter to the selected variable once â€”
-  # all three outputs share this without re-running the filter
+  # reactive(): filter to the selected variable once --
+  # all three outputs share this without re-running the filter.
   # tidycensus stores the NAME of the variable (not the ACS code) in the
   # variable column when a named vector is passed to get_acs(), so filter
   # by input$var directly rather than vars[input$var]

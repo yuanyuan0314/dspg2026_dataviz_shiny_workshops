@@ -1,14 +1,21 @@
+# Demo: Common Shiny Input Functions
+# DSPG 2026 | Virginia Tech
+#
+# Six input widgets, each in its own tab.
+# Run the app and explore each tab to see how inputs control outputs.
+#
+# HOW TO RUN: Click "Run App" in RStudio.
+
 library(shiny)
 library(tidyverse)
 library(palmerpenguins)
+library(nycflights13)
 
-# Demo: Four common input functions in one navbarPage app.
-# Each tab shows a different input widget and what it produces.
-
+# ── UI ────────────────────────────────────────────────────────────────────────
 ui <- navbarPage("Input Functions Demo",
 
-  # selectInput (single) â€” one choice at a time
-  tabPanel("selectInput (single)",
+  # 1. selectInput (single) — one choice at a time
+  tabPanel("selectInput",
     sidebarLayout(
       sidebarPanel(
         selectInput("species1", "Species:",
@@ -19,7 +26,7 @@ ui <- navbarPage("Input Functions Demo",
     )
   ),
 
-  # selectInput (multiple) â€” any number of choices
+  # 2. selectInput (multiple) — any number of choices
   tabPanel("selectInput (multiple)",
     sidebarLayout(
       sidebarPanel(
@@ -32,7 +39,7 @@ ui <- navbarPage("Input Functions Demo",
     )
   ),
 
-  # radioButtons â€” mutually exclusive, always one selected
+  # 3. radioButtons — mutually exclusive, always one selected
   tabPanel("radioButtons",
     sidebarLayout(
       sidebarPanel(
@@ -44,7 +51,7 @@ ui <- navbarPage("Input Functions Demo",
     )
   ),
 
-  # checkboxGroupInput â€” any subset, can be empty
+  # 4. checkboxGroupInput — any subset, can be empty
   tabPanel("checkboxGroupInput",
     sidebarLayout(
       sidebarPanel(
@@ -55,11 +62,57 @@ ui <- navbarPage("Input Functions Demo",
       ),
       mainPanel(tableOutput("table4"))
     )
+  ),
+
+  # 5. sliderInput — numeric range or single value
+  tabPanel("sliderInput",
+    sidebarLayout(
+      sidebarPanel(
+        sliderInput("delay_range", "Departure delay range (min):",
+                    min   = -30,
+                    max   = 120,
+                    value = c(0, 60),   # two-handle range slider
+                    step  = 5),
+        sliderInput("n_bins", "Histogram bins:",
+                    min   = 5,
+                    max   = 50,
+                    value = 20,         # single-handle slider
+                    step  = 5)
+      ),
+      mainPanel(
+        plotOutput("plot5"),
+        br(),
+        helpText("Two-handle slider: value is a length-2 vector input$delay_range[1] and input$delay_range[2].")
+      )
+    )
+  ),
+
+  # 6. dateRangeInput — filter by date window
+  tabPanel("dateRangeInput",
+    sidebarLayout(
+      sidebarPanel(
+        dateRangeInput("date_range", "Flight date range:",
+                       start = "2013-01-01",
+                       end   = "2013-03-31",
+                       min   = "2013-01-01",
+                       max   = "2013-12-31"),
+        selectInput("origin2", "Origin airport:",
+                    choices  = c("All", "EWR", "JFK", "LGA"),
+                    selected = "All")
+      ),
+      mainPanel(
+        plotOutput("plot6"),
+        br(),
+        helpText("input$date_range returns a Date vector of length 2: start and end.")
+      )
+    )
   )
 )
 
+# ── Server ────────────────────────────────────────────────────────────────────
 server <- function(input, output, session) {
 
+  # Tab 1: selectInput (single)
   output$plot1 <- renderPlot({
     penguins |>
       filter(species == input$species1) |>
@@ -71,6 +124,7 @@ server <- function(input, output, session) {
       theme_minimal(base_size = 13)
   })
 
+  # Tab 2: selectInput (multiple)
   output$plot2 <- renderPlot({
     req(input$species2)
     penguins |>
@@ -83,6 +137,7 @@ server <- function(input, output, session) {
       theme_minimal(base_size = 13)
   })
 
+  # Tab 3: radioButtons
   output$plot3 <- renderPlot({
     penguins |>
       filter(island == input$island) |>
@@ -95,6 +150,7 @@ server <- function(input, output, session) {
       theme_minimal(base_size = 13)
   })
 
+  # Tab 4: checkboxGroupInput
   output$table4 <- renderTable({
     req(input$vars)
     penguins |>
@@ -108,6 +164,48 @@ server <- function(input, output, session) {
       pivot_wider(names_from = Stat, values_from = value) |>
       mutate(across(where(is.numeric), \(x) round(x, 2)))
   }, striped = TRUE, hover = TRUE, bordered = TRUE)
+
+  # Tab 5: sliderInput
+  output$plot5 <- renderPlot({
+    flights |>
+      filter(
+        !is.na(dep_delay),
+        dep_delay >= input$delay_range[1],   # lower bound
+        dep_delay <= input$delay_range[2]    # upper bound
+      ) |>
+      ggplot(aes(x = dep_delay)) +
+      geom_histogram(bins = input$n_bins, fill = "#861F41", color = "white") +
+      labs(
+        title = paste0("Dep Delay: ", input$delay_range[1],
+                       " to ", input$delay_range[2], " min"),
+        x = "Departure Delay (min)", y = "Count"
+      ) +
+      theme_minimal(base_size = 13)
+  })
+
+  # Tab 6: dateRangeInput
+  output$plot6 <- renderPlot({
+    df <- flights |>
+      mutate(date = as.Date(paste(year, month, day, sep = "-"))) |>
+      filter(
+        date >= input$date_range[1],   # start date
+        date <= input$date_range[2]    # end date
+      )
+
+    if (input$origin2 != "All")
+      df <- df |> filter(origin == input$origin2)
+
+    df |>
+      count(date) |>
+      ggplot(aes(x = date, y = n)) +
+      geom_line(color = "#861F41", linewidth = 0.8) +
+      geom_smooth(color = "#E5751F", se = FALSE, linewidth = 0.6) +
+      labs(
+        title = "Daily Flight Count",
+        x = "Date", y = "Number of Flights"
+      ) +
+      theme_minimal(base_size = 13)
+  })
 }
 
 shinyApp(ui, server)

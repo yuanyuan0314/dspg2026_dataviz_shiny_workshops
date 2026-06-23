@@ -7,13 +7,13 @@ library(scales)
 # Demo: leaflet choropleth map using tidycensus county-level ACS data.
 #
 # HOW TO RUN: Select the lines for each section and press Ctrl+Enter.
-# Do NOT use Source / Run All â€” each widget must be printed one at a time.
+# Do NOT use Source / Run All -- each widget must be printed one at a time.
 #
 # Requires a Census API key. Register free at https://api.census.gov/data/key_signup.html
 # then run: tidycensus::census_api_key("YOUR_KEY", install = TRUE)
 #
 
-# â”€â”€ Section 1: Virginia county median income choropleth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Section 1: Virginia county median income choropleth ──────────────────────
 va_income <- get_acs(
   geography = "county",
   state     = "VA",
@@ -52,7 +52,7 @@ print(
 )
 
 
-# â”€â”€ Section 2: Swap variable â€” poverty rate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Section 2: Swap variable -- poverty rate ──────────────────────────────────
 va_poverty <- get_acs(
   geography = "county",
   state     = "VA",

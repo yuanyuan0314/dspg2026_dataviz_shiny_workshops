@@ -47,7 +47,7 @@ server <- function(input, output, session) {
 
   var_data <- reactive({
     state_data |>
-      filter(variable == vars[input$map_var]) |>
+      filter(variable == input$map_var) |>
       select(GEOID, estimate)
   })
 

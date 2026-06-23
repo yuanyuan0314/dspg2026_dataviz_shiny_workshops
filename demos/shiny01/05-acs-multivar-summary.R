@@ -1,8 +1,8 @@
 library(shiny)
 library(tidyverse)
 
-# Demo: selectInput (multiple) â†’ pick variables â†’ summary statistics table.
-# Uses state.x77 (built-in R census data â€” no download needed).
+# Demo: selectInput (multiple) -> pick variables -> summary statistics table.
+# Uses state.x77 (built-in R census data -- no download needed).
 
 state_df <- as.data.frame(state.x77) |>
   tibble::rownames_to_column("state") |>

@@ -13,7 +13,7 @@ library(scales)
 # then run: tidycensus::census_api_key("YOUR_KEY", install = TRUE)
 #
 
-# â”€â”€ Data (pulled once at startup) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Data (pulled once at startup) ─────────────────────────────────────────────
 va <- get_acs(
   geography = "county",
   state     = "VA",
@@ -40,7 +40,7 @@ pal_age     <- colorNumeric("Blues",                domain = va$median_age)
 
 all_layers <- c("Median Income", "Poverty Rate", "Median Age")
 
-# â”€â”€ UI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── UI ────────────────────────────────────────────────────────────────────────
 ui <- fluidPage(
   titlePanel("Virginia County Layer Explorer"),
   sidebarLayout(
@@ -57,7 +57,7 @@ ui <- fluidPage(
   )
 )
 
-# â”€â”€ Server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Server ────────────────────────────────────────────────────────────────────
 server <- function(input, output, session) {
 
   # Build the base map with all three layers added but two hidden

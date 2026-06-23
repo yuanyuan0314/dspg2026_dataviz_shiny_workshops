@@ -4,7 +4,7 @@ library(shiny)
 
 ui <- navbarPage("Layout Demo",
 
-  # Tab 1 â€” sidebarLayout: controls on the left, output on the right
+  # Tab 1 — sidebarLayout: controls on the left, output on the right
   tabPanel("Sidebar Layout",
     sidebarLayout(
       sidebarPanel(
@@ -16,7 +16,7 @@ ui <- navbarPage("Layout Demo",
     )
   ),
 
-  # Tab 2 â€” fluidRow + column: free 12-column grid
+  # Tab 2 — fluidRow + column: free 12-column grid
   tabPanel("Grid Layout",
     fluidRow(
       column(4, wellPanel(
@@ -28,10 +28,12 @@ ui <- navbarPage("Layout Demo",
     )
   ),
 
-  # Tab 3 â€” fillPage: fills the entire browser viewport (good for maps)
+  # Tab 3 — fillPage: fills the entire browser viewport (good for maps/dashboards)
+  # Tip: use height = “100vh” only for full-screen map apps; for regular content
+  # just set a fixed pixel height so the plot doesn't overflow the page.
   tabPanel("Full-Screen Layout",
-    fillPage(padding = 0,
-      plotOutput("full_plot", height = "100vh")
+    fillPage(padding = 15,
+      plotOutput("full_plot", height = "calc(100vh - 120px)")
     )
   )
 )

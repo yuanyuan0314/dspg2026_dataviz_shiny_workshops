@@ -2,14 +2,14 @@ library(tidyverse)
 library(plotly)
 library(palmerpenguins)
 
-# Demo: plotly â€” ggplotly() and native plot_ly().
+# Demo: plotly -- ggplotly() and native plot_ly().
 #
 # HOW TO RUN: Select the lines for each section and press Ctrl+Enter.
-# Do NOT use Source / Run All â€” plotly widgets must be printed one at a time
+# Do NOT use Source / Run All -- plotly widgets must be printed one at a time
 # or only the last one will appear in the Viewer pane.
 #
 
-# â”€â”€ Section 1: ggplotly() â€” wrap any ggplot in one line â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Section 1: ggplotly() -- wrap any ggplot in one line ─────────────────────
 p <- penguins |>
   drop_na() |>
   ggplot(aes(
@@ -38,7 +38,7 @@ p <- penguins |>
 print(ggplotly(p, tooltip = "text"))   # hover shows custom tooltip
 
 
-# â”€â”€ Section 2: native plot_ly() â€” bar chart with full control â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Section 2: native plot_ly() -- bar chart with full control ────────────────
 bar_chart <- penguins |>
   drop_na() |>
   group_by(species) |>
